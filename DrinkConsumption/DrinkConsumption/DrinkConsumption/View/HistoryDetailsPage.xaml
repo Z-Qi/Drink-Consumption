@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:DrinkConsumption"
              x:Class="DrinkConsumption.View.HistoryDetailsPage">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="Black">
             <Label
                 Text="TODO"
                 TextColor="Black"

@@ -18,11 +18,11 @@ namespace DrinkConsumption.ViewModel
 
         private void testSample()
         {
-            _drinksHistory.Add(DateTime.Today, new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
-            _drinksHistory.Add(new DateTime(1990, 11, 2), new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
-            _drinksHistory.Add(new DateTime(2017, 11, 2), new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
-            _drinksHistory.Add(new DateTime(1992, 11, 2), new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
-            _drinksHistory.Add(new DateTime(1524, 11, 2), new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
+            History.Add(DateTime.Today, new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
+            History.Add(new DateTime(1990, 11, 2), new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
+            History.Add(new DateTime(2017, 11, 2), new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
+            History.Add(new DateTime(1992, 11, 2), new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
+            History.Add(new DateTime(1524, 11, 2), new List<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) });
         }
 
         public static DrinksHistoryViewModel newHistory()
@@ -38,9 +38,9 @@ namespace DrinkConsumption.ViewModel
         {
             if (date == DateTime.Today)
             {
-                if (!_drinksHistory.ContainsKey(DateTime.Today))
+                if (!History.ContainsKey(DateTime.Today))
                 {
-                    _drinksHistory.Add(DateTime.Today, drinksToday);
+                    History.Add(DateTime.Today, drinksToday);
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace DrinkConsumption.ViewModel
 
         public List<Drink> details(DateTime date)
         {
-            return _drinksHistory[date];
+            return History[date];
         }
 
         /*

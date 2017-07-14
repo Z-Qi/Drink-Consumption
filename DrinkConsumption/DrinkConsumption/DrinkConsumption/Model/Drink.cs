@@ -6,7 +6,7 @@ namespace DrinkConsumption
 {
     public class Drink
     {
-        private String _type { get; set; }
+        private string _type;
         private double _volume;
         private double _stdDrinks;
         private double _price;
@@ -30,7 +30,7 @@ namespace DrinkConsumption
 
         public String Description
         {
-            get => String.Format("Volume: {0:N0}mL, \t\tStandard Drinks: {1:N1},\t\tCost: ${2:N2}", _volume, _stdDrinks, _price);
+            get => $"Volume: {_volume:N0}mL, \t\tStandard Drinks: {_stdDrinks:N1},\t\tCost: ${_price:N2}";
         }
 
     }

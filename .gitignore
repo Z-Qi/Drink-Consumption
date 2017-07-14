@@ -1,0 +1,15 @@
+Components
+[Pp]ackages
+*.userprefs
+Resource.designer.cs
+*.suo
+*.user
+*.sln.docstates
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+x64/
+build/
+bld/
+[Bb]in/
+[Oo]bj/

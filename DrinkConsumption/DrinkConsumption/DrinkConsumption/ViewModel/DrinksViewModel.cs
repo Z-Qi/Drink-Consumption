@@ -16,24 +16,24 @@ namespace DrinkConsumption.ViewModel
 
         private void testSample()
         {
-            _drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
-            _drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
-            _drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
-            _drinks.Add(new Drink(null, 100, 1.33333, 15.5));
-            _drinks.Add(new Drink("", 600, 3, 45.99));
-            _drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
-            _drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
-            _drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
-            _drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
-            _drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
-            _drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
-            _drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
-            _drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
-            _drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
-            _drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
-            _drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
-            _drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
-            _drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
+            Drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
+            Drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
+            Drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
+            Drinks.Add(new Drink(null, 100, 1.33333, 15.5));
+            Drinks.Add(new Drink("", 600, 3, 45.99));
+            Drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
+            Drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
+            Drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
+            Drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
+            Drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
+            Drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
+            Drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
+            Drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
+            Drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
+            Drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
+            Drinks.Add(new Drink("TEST 1", 100, 1.33333, 15.5));
+            Drinks.Add(new Drink("TEST 2", 600, 3, 45.99));
+            Drinks.Add(new Drink("TEST 3", 010, 0.2, 5));
         }
 
         public List<Drink> Drinks
@@ -47,7 +47,7 @@ namespace DrinkConsumption.ViewModel
 
         public void add(Drink drink)
         {
-            _drinks.Add(drink);
+            Drinks.Add(drink);
         }
 
     }
