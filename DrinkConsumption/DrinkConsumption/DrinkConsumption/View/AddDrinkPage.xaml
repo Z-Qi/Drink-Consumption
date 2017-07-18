@@ -3,8 +3,57 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DrinkConsumption.View.AddDrinkPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="TODO" />
+        <StackLayout BackgroundColor="#F5F5DC">
+            <Label Text="TODO" VerticalOptions="Start"/>
+
+            <Entry
+                Placeholder="Name"
+                Text="{Binding Name, Mode=TwoWay}"
+                VerticalOptions="Start"
+                HorizontalOptions="FillAndExpand"
+                Keyboard="Text"
+                BackgroundColor="Cornsilk"
+                
+                />
+
+            <Entry
+                Placeholder="Volume"
+                Text="{Binding Volume, Mode=OneWayToSource}"
+                VerticalOptions="Start"
+                HorizontalOptions="FillAndExpand"
+                Keyboard="Numeric"
+                BackgroundColor="BlanchedAlmond"
+                
+                />
+
+            <Entry
+                Placeholder="Standard Drinks"
+                Text="{Binding StandardDrinks, Mode=OneWayToSource}"
+                VerticalOptions="Start"
+                HorizontalOptions="FillAndExpand"
+                Keyboard="Numeric"
+                BackgroundColor="PowderBlue"
+                
+                />
+
+            <Entry
+                Placeholder="Price"
+                Text="{Binding Price, Mode=OneWayToSource}"
+                VerticalOptions="Start"
+                HorizontalOptions="FillAndExpand"
+                Keyboard="Numeric"
+                BackgroundColor="BurlyWood"
+                
+                />
+
+            <Button
+                Text="Done"
+                TextColor="DarkSlateGray"
+                VerticalOptions="StartAndExpand"
+                HorizontalOptions="End"
+                Command="{Binding AddDrinkCommand}"
+                
+                />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

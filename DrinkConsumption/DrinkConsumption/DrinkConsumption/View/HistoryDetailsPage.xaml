@@ -4,26 +4,24 @@
              xmlns:local="clr-namespace:DrinkConsumption"
              x:Class="DrinkConsumption.View.HistoryDetailsPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="Black">
-            <Label
+        <StackLayout BackgroundColor="#F5F5DC">
+            <Label 
                 Text="TODO"
-                TextColor="Black"
+                TextColor="#3A3A3A"
                 FontSize="Large"
                 HorizontalTextAlignment="Center"
-                BackgroundColor="#B3FF8726"
             />
-            <ListView
-                BackgroundColor="#B3FF8726"
+            <ListView 
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
-                ItemsSource="{Binding Details()}">
+                ItemsSource="{Binding History}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell
                         Text="{Binding Type}"
-                        TextColor="Black"
+                        TextColor="#3A3A3A"
                         Detail="{Binding Description}"
-                        DetailColor="Chocolate"/>
+                        DetailColor="#DEB888"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

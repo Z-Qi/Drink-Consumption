@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using DrinkConsumption.Model;
 using DrinkConsumption.View;
 using DrinkConsumption.ViewModel;
 
@@ -14,13 +15,13 @@ namespace DrinkConsumption
 	public partial class App : Application
 	{
 
-        DrinksHistoryViewModel _history;
+        DrinkHistoryViewModel _history;
 
         public App ()
 		{
 			InitializeComponent();
 
-            _history = DrinksHistoryViewModel.newHistory();
+            _history = DrinkHistoryViewModel.NewHistory();
 
             MainPage = new CarouselPage()
             {
@@ -28,14 +29,13 @@ namespace DrinkConsumption
                 {
                     new MainPage(),
                     new HistoryPage(_history),
-                    new HistoryDetailsPage(_history, new DateTime(2017,07,14,0,0,0))
                 }
             };
         }
 
 		protected override void OnStart ()
 		{
-            _history.add(DateTime.Today, new DrinksViewModel().Drinks);
+            _history.Add(new DrinkHistory(DateTime.Today, new DrinkViewModel().Drinks));
         }
 
 		protected override void OnSleep ()

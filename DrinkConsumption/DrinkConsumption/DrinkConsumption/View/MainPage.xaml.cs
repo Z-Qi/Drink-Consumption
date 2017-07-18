@@ -12,7 +12,7 @@ namespace DrinkConsumption
 		public MainPage()
 		{
 			InitializeComponent();
-            BindingContext = new ViewModel.DrinksViewModel();
+            BindingContext = new ViewModel.DrinkViewModel();
 		}
 	}
 }

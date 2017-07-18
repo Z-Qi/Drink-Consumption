@@ -7,14 +7,17 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using DrinkConsumption.ViewModel;
+
 namespace DrinkConsumption.View
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AddDrinkPage : ContentPage
 	{
-		public AddDrinkPage ()
+		public AddDrinkPage (AddDrinkViewModel viewModel)
 		{
 			InitializeComponent ();
+            BindingContext = viewModel;
 		}
 	}
 }

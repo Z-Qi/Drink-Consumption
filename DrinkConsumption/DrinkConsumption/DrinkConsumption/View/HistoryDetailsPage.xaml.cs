@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using DrinkConsumption.Model;
 using DrinkConsumption.ViewModel;
 
 using Xamarin.Forms;
@@ -14,13 +15,10 @@ namespace DrinkConsumption.View
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class HistoryDetailsPage : ContentPage
 	{
-        DateTime date;
-
-		public HistoryDetailsPage (DrinksHistoryViewModel viewModel, DateTime date)
+        public HistoryDetailsPage (DrinkHistory history)
 		{
 			InitializeComponent ();
-            BindingContext = viewModel;
-            this.date = date;
+            BindingContext = history;
         }
 	}
 }

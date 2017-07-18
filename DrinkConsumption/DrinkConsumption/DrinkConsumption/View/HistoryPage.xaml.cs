@@ -14,7 +14,7 @@ namespace DrinkConsumption.View
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class HistoryPage : ContentPage
 	{
-		public HistoryPage (DrinksHistoryViewModel historyModel)
+		public HistoryPage (DrinkHistoryViewModel historyModel)
 		{
 			InitializeComponent ();
             BindingContext = historyModel;

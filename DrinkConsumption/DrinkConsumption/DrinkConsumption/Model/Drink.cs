@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,7 @@ namespace DrinkConsumption
 {
     public class Drink
     {
+
         private string _type;
         private double _volume;
         private double _stdDrinks;
@@ -19,6 +21,10 @@ namespace DrinkConsumption
             _price = price;
         }
 
+        [JsonProperty(PropertyName = "Id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "Id")]
         public string Type
         {
             get => _type;
@@ -28,11 +34,40 @@ namespace DrinkConsumption
             }
         }
 
-        public String Description
+        [JsonProperty(PropertyName = "Volume")]
+        public double Volume
         {
-            get => $"Volume: {_volume:N0}mL, \t\tStandard Drinks: {_stdDrinks:N1},\t\tCost: ${_price:N2}";
+            get => _volume;
+            set
+            {
+                _volume = value;
+            }
         }
 
+        [JsonProperty(PropertyName = "StandDrinks")]
+        public double StandardDrinks
+        {
+            get => _stdDrinks;
+            set
+            {
+                _stdDrinks = value;
+            }
+        }
+
+        [JsonProperty(PropertyName = "Price")]
+        public double Price
+        {
+            get => _price;
+            set
+            {
+                _price = value;
+            }
+        }
+
+        public String Description
+        {
+            get => $"Volume: {_volume:N0}mL\t\tStandard Drink: {_stdDrinks:N1}\t\tCost: ${_price:N2}";
+        }
     }
 
     

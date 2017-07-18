@@ -12,9 +12,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Database\DatabaseManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Drink.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\DrinksHistoryViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\DrinksViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\DrinkHistory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\AddDrinkViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\DrinkHistoryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\DrinkViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)View\AddDrinkPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -37,9 +40,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Model\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)View\HistoryPage.xaml">
