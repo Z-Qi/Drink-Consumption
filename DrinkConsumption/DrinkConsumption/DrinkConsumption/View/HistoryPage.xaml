@@ -15,11 +15,14 @@
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
                 ItemsSource="{Binding History}"
-                SelectedItem="{Binding SelectedHistory}">
+                SelectedItem="{Binding SelectedHistory, Mode=TwoWay}"
+                IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding PullToRefreshCommand}"
+                IsRefreshing="{Binding Refreshing}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell
-                            Text="{Binding Date}"
+                            Text="{Binding DateString}"
                             TextColor="#DEB888"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>

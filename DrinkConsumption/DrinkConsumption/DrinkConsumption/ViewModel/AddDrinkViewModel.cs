@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DrinkConsumption.Database;
+using DrinkConsumption.Model;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -61,7 +60,12 @@ namespace DrinkConsumption.ViewModel
 
         private async Task AddDrink()
         {
-            //new Drink(Name, Volume, StandardDrinks, Price);
+            if (string.IsNullOrEmpty(Name))
+            {
+                await Application.Current.MainPage.DisplayAlert("Whoops!", "You have not entered a drink", "OK");
+                return;
+            }
+            await DatabaseManager.DatabaseManagerInstance.PostDrink(new Drink(Name, Volume, StandardDrinks, Price));
             await Application.Current.MainPage.Navigation.PopModalAsync();
         }
     }

@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace DrinkConsumption
+namespace DrinkConsumption.Model
 {
     public class Drink
     {
-
         private string _type;
         private double _volume;
         private double _stdDrinks;
@@ -24,7 +21,7 @@ namespace DrinkConsumption
         [JsonProperty(PropertyName = "Id")]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "Id")]
+        [JsonProperty(PropertyName = "Type")]
         public string Type
         {
             get => _type;

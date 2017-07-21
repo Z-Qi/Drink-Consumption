@@ -1,11 +1,9 @@
 ﻿using DrinkConsumption.Database;
+using DrinkConsumption.Model;
 using DrinkConsumption.View;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -16,20 +14,23 @@ namespace DrinkConsumption.ViewModel
     {
         private ObservableCollection<Drink> _drinks;
         private string _searchEntry;
+        private Drink _selectedDrink;
+
+        private bool _isRefreshing = false;
 
         public ICommand AddDrinkCommand { get; private set; }
         public ICommand PullToRefreshCommand { get; private set; }
-
-        private bool _isRefreshing = false;
+        public ICommand ClearDrinksCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DrinkViewModel()
         {
             _drinks = new ObservableCollection<Drink>();
-            this.TestSample();
-            AddDrinkCommand = new Command(async () => await AddDrinkAsync());
+            //TestSample();
+            AddDrinkCommand = new Command(async () => await AddDrink());
             PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
+            ClearDrinksCommand = new Command(async () => await ClearDrinks());
         }
 
         private void TestSample()
@@ -59,28 +60,6 @@ namespace DrinkConsumption.ViewModel
             Drinks.Add(drink);
         }
 
-        private async Task AddDrinkAsync()
-        {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDrinkPage(new AddDrinkViewModel(SearchEntry)));
-            SearchEntry = null;
-        }
-
-        private async Task OnPullToRefresh()
-        {
-            Refreshing = true;
-            List<Drink> drinks = await DatabaseManager.DatabaseManagerInstance.GetDrinks();
-
-            Drinks = new ObservableCollection<Drink>(drinks);
-            Refreshing = false;
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-
         public ObservableCollection<Drink> Drinks
         {
             get => _drinks;
@@ -88,6 +67,20 @@ namespace DrinkConsumption.ViewModel
             {
                 _drinks = value;
                 this.OnPropertyChanged();
+            }
+        }
+
+        public Drink SelectedDrink
+        {
+            get => _selectedDrink;
+            set
+            {
+                _selectedDrink = value;
+                if (_selectedDrink != null)
+                {
+                    EditDrink();
+                }
+                _selectedDrink = null;
             }
         }
 
@@ -107,10 +100,41 @@ namespace DrinkConsumption.ViewModel
             set
             {
                 _isRefreshing = value;
-                this.OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
+        private async Task AddDrink()
+        {
+            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDrinkPage(new AddDrinkViewModel(SearchEntry)));
+            SearchEntry = null;
+        }
+
+        private async void EditDrink()
+        {
+            await Application.Current.MainPage.Navigation.PushModalAsync(new EditDrinkPage(new EditDrinkViewModel(SelectedDrink)));
+        }
+
+        private async Task OnPullToRefresh()
+        {
+            Refreshing = true;
+            Drinks = new ObservableCollection<Drink>(await DatabaseManager.DatabaseManagerInstance.GetDrinks());
+            Refreshing = false;
+        }
+
+        private async Task ClearDrinks()
+        {
+            bool result = await Application.Current.MainPage.DisplayAlert("Remove all Drinks", "Are you sure?", "Remove", "Cancel");
+            if (!result)
+            {
+                return;
+            }
+            await DatabaseManager.DatabaseManagerInstance.ClearDrinks();
+        }
     }
 }

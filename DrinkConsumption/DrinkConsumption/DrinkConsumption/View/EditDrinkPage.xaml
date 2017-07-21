@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="DrinkConsumption.View.AddDrinkPage">
+             x:Class="DrinkConsumption.View.EditDrinkPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="#F5F5DC">
-            <Label Text="AddDrink" VerticalOptions="Start"/>
+            <Label Text="Edit Drink" VerticalOptions="Start"/>
 
             <Entry
                 Placeholder="Name"
@@ -18,7 +18,7 @@
 
             <Entry
                 Placeholder="Volume"
-                Text="{Binding Volume, Mode=OneWayToSource}"
+                Text="{Binding Volume, Mode=TwoWay}"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
@@ -28,7 +28,7 @@
 
             <Entry
                 Placeholder="Standard Drinks"
-                Text="{Binding StandardDrinks, Mode=OneWayToSource}"
+                Text="{Binding StandardDrinks, Mode=TwoWay}"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
@@ -38,7 +38,7 @@
 
             <Entry
                 Placeholder="Price"
-                Text="{Binding Price, Mode=OneWayToSource}"
+                Text="{Binding Price, Mode=TwoWay}"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
@@ -49,9 +49,18 @@
             <Button
                 Text="Done"
                 TextColor="DarkSlateGray"
-                VerticalOptions="StartAndExpand"
+                VerticalOptions="Start"
+                HorizontalOptions="Start"
+                Command="{Binding EditDrinkCommand}"
+                
+                />
+
+            <Button
+                Text="Remove"
+                TextColor="DarkSlateGray"
+                VerticalOptions="End"
                 HorizontalOptions="End"
-                Command="{Binding AddDrinkCommand}"
+                Command="{Binding RemoveDrinkCommand}"
                 
                 />
         </StackLayout>

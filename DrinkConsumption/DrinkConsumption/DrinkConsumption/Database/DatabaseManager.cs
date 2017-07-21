@@ -1,48 +1,91 @@
-﻿using Microsoft.WindowsAzure.MobileServices;
-using System;
+﻿using DrinkConsumption.Model;
+using Microsoft.WindowsAzure.MobileServices;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DrinkConsumption.Database
 {
     public class DatabaseManager
     {
-
-        private static DatabaseManager instance;
-        private MobileServiceClient client;
-        private IMobileServiceTable<Drink> drinkTable;
+        private static DatabaseManager _instance;
+        private MobileServiceClient _client;
+        private IMobileServiceTable<Drink> _drinkTable;
+        private IMobileServiceTable<DrinkHistory> _drinkHistoryTable;
 
         private DatabaseManager()
         {
-            client = new MobileServiceClient("http://drinkconsumption.azurewebsites.net");
-            drinkTable = client.GetTable<Drink>();
+            _client = new MobileServiceClient("http://drinkconsumption.azurewebsites.net");
+            _drinkTable = _client.GetTable<Drink>();
+            _drinkHistoryTable = _client.GetTable<DrinkHistory>();
         }
 
         public MobileServiceClient DatabaseClient
         {
-            get
-            {
-                return client;
-            }
+            get => _client;
         }
 
         public static DatabaseManager DatabaseManagerInstance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new DatabaseManager();
+                    _instance = new DatabaseManager();
                 }
 
-                return instance;
+                return _instance;
             }
         }
         
         public async Task<List<Drink>> GetDrinks()
         {
-            return await drinkTable.ToListAsync();
+            return await _drinkTable.ToListAsync();
+        }
+
+        public async Task PostDrink(Drink drink)
+        {
+            await _drinkTable.InsertAsync(drink);
+        }
+
+        public async Task EditDrink(Drink drink)
+        {
+            await _drinkTable.UpdateAsync(drink);
+        }
+
+        public async Task RemoveDrink(Drink drink)
+        {
+            await _drinkTable.DeleteAsync(drink);
+        }
+
+        public async Task ClearDrinks()
+        {
+            foreach (Drink drink in await DatabaseManagerInstance.GetDrinks())
+            {
+                await _drinkTable.DeleteAsync(drink);
+            }
+        }
+
+        public async Task<List<DrinkHistory>> GetHistory()
+        {
+            return await _drinkHistoryTable.ToListAsync();
+        }
+
+        public async Task PostHistory(DrinkHistory history)
+        {
+            await _drinkHistoryTable.InsertAsync(history);
+        }
+
+        public async Task RemoveHistory(DrinkHistory history)
+        {
+            await _drinkHistoryTable.DeleteAsync(history);
+        }
+
+        public async Task ClearHistory()
+        {
+            foreach (DrinkHistory history in await DatabaseManagerInstance.GetHistory())
+            {
+                await _drinkHistoryTable.DeleteAsync(history);
+            }
         }
 
     }

@@ -149,6 +149,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\Add.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\DrinkConsumption\DrinkConsumption.projitems" Label="Shared" Condition="Exists('..\DrinkConsumption\DrinkConsumption.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

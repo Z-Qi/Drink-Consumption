@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="#F5F5DC">
             <Label 
-                Text="TODO"
+                Text="{Binding DateString}"
                 TextColor="#3A3A3A"
                 FontSize="Large"
                 HorizontalTextAlignment="Center"
