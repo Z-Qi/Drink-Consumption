@@ -14,14 +14,21 @@
             <ListView 
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
-                ItemsSource="{Binding History}">
+                ItemsSource="{Binding Drinks}"
+                IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding PullToRefreshCommand}"
+                IsRefreshing="{Binding Refreshing}"
+                SelectedItem="{Binding SelectedDrink, Mode=TwoWay}"
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell
-                        Text="{Binding Type}"
-                        TextColor="#3A3A3A"
-                        Detail="{Binding Description}"
-                        DetailColor="#DEB888"/>
+                            Text="{Binding Type}"
+                            TextColor="#3A3A3A"
+                            Detail="{Binding Description}"
+                            DetailColor="#DEB888"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

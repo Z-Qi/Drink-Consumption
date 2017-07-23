@@ -16,6 +16,7 @@ namespace DrinkConsumption.ViewModel
     {
         private static DrinkHistoryViewModel _history = null;
         private ObservableCollection<DrinkHistory> _drinkHistory;
+        private DrinkHistory _todaysHistory;
         private DrinkHistory _selectedHistory;
 
         private bool _isRefreshing = false;
@@ -27,20 +28,24 @@ namespace DrinkConsumption.ViewModel
         private DrinkHistoryViewModel()
         {
             _drinkHistory = new ObservableCollection<DrinkHistory>();
+            _todaysHistory = new DrinkHistory(DateTime.Today);
+            _drinkHistory.Add(_todaysHistory);
             //TestSample();
             PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
         }
-
+        /*
         private void TestSample()
         {
-            History.Add(new DrinkHistory(DateTime.Today, new ObservableCollection<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) }));
-            History.Add(new DrinkHistory(new DateTime(1990, 11, 2), new ObservableCollection<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) }));
-            History.Add(new DrinkHistory(new DateTime(2017, 11, 2), new ObservableCollection<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) }));
-            History.Add(new DrinkHistory(new DateTime(1992, 11, 2), new ObservableCollection<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) }));
-            History.Add(new DrinkHistory(new DateTime(1524, 11, 2), new ObservableCollection<Drink> { new Drink("history test", 1, 1, 1), new Drink("history test 2", 1, 1, 1) }));
-        }
+            DrinkHistory h2 = new DrinkHistory(new DateTime(1990, 11, 2)); h2.Add(new Drink("history test 1", 1, 1, 1, h2.Guid)); h2.Add(new Drink("history test 2", 1, 1, 1, h2.Guid));
+            DrinkHistory h3 = new DrinkHistory(new DateTime(2017, 11, 2)); h3.Add(new Drink("history test 3", 1, 1, 1, h3.Guid)); h3.Add(new Drink("history test 4", 1, 1, 1, h3.Guid));
+            DrinkHistory h4 = new DrinkHistory(new DateTime(1992, 11, 2)); h4.Add(new Drink("history test 5", 1, 1, 1, h4.Guid)); h4.Add(new Drink("history test 6", 1, 1, 1, h4.Guid));
 
-        public static DrinkHistoryViewModel NewHistory()
+            DatabaseManager.DatabaseManagerInstance.PostHistory(h2);
+            DatabaseManager.DatabaseManagerInstance.PostHistory(h3);
+            DatabaseManager.DatabaseManagerInstance.PostHistory(h4);
+        }
+        */
+        public static DrinkHistoryViewModel HistoryInstance()
         {
             if (_history == null)
             {
@@ -63,6 +68,15 @@ namespace DrinkConsumption.ViewModel
             set
             {
                 _drinkHistory = value;
+            }
+        }
+
+        public DrinkHistory TodaysHistory
+        {
+            get => _todaysHistory;
+            set
+            {
+                _todaysHistory = value;
             }
         }
 
@@ -92,8 +106,7 @@ namespace DrinkConsumption.ViewModel
 
         private void HistoryDetails()
         {
-            Application.Current.MainPage.Navigation.PushModalAsync(new HistoryDetailsPage(SelectedHistory));
-            _selectedHistory = null;
+            Application.Current.MainPage.Navigation.PushModalAsync(new HistoryDetailsPage(new DrinkViewModel(SelectedHistory)));
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -104,9 +117,14 @@ namespace DrinkConsumption.ViewModel
         private async Task OnPullToRefresh()
         {
             Refreshing = true;
+            if (!History.Any(h => h.Date == DateTime.Today))
+            {
+                TodaysHistory = new DrinkHistory(DateTime.Today);
+                History.Add(TodaysHistory);
+                await DatabaseManager.DatabaseManagerInstance.PostHistory(TodaysHistory);
+            }
             History = new ObservableCollection<DrinkHistory>(await DatabaseManager.DatabaseManagerInstance.GetHistory());
             Refreshing = false;
         }
-
     }
 }

@@ -36,10 +36,15 @@ namespace DrinkConsumption.Database
                 return _instance;
             }
         }
-        
+
         public async Task<List<Drink>> GetDrinks()
         {
             return await _drinkTable.ToListAsync();
+        }
+
+        public async Task<List<Drink>> GetDrinks(DrinkHistory history)
+        {
+            return await _drinkTable.Where(d => d.Guid.ToString() == history.Guid.ToString()).ToListAsync();
         }
 
         public async Task PostDrink(Drink drink)
@@ -57,9 +62,10 @@ namespace DrinkConsumption.Database
             await _drinkTable.DeleteAsync(drink);
         }
 
-        public async Task ClearDrinks()
+        public async Task ClearDrinks(DrinkHistory history)
         {
-            foreach (Drink drink in await DatabaseManagerInstance.GetDrinks())
+            List<Drink> drinks = await DatabaseManagerInstance.GetDrinks(history);
+            foreach (Drink drink in drinks)
             {
                 await _drinkTable.DeleteAsync(drink);
             }
@@ -82,11 +88,17 @@ namespace DrinkConsumption.Database
 
         public async Task ClearHistory()
         {
-            foreach (DrinkHistory history in await DatabaseManagerInstance.GetHistory())
+            List<DrinkHistory> histories = await DatabaseManagerInstance.GetHistory();
+            foreach (DrinkHistory history in histories)
             {
                 await _drinkHistoryTable.DeleteAsync(history);
             }
-        }
 
+            List<Drink> allDrinks = await DatabaseManagerInstance.GetDrinks();
+            foreach (Drink drink in allDrinks)
+            {
+                await _drinkTable.DeleteAsync(drink);
+            }
+        }
     }
 }

@@ -9,13 +9,15 @@ namespace DrinkConsumption.Model
         private double _volume;
         private double _stdDrinks;
         private double _price;
+        private readonly Guid _guid;
 
-        public Drink (String type, double vol, double std, double price)
+        public Drink (String type, double vol, double std, double price, Guid guid)
         {
             _type = type;
             _volume = vol;
             _stdDrinks = std;
             _price = price;
+            _guid = guid;
         }
 
         [JsonProperty(PropertyName = "Id")]
@@ -59,6 +61,13 @@ namespace DrinkConsumption.Model
             {
                 _price = value;
             }
+        }
+
+        [JsonProperty(PropertyName = "Guid")]
+        public Guid Guid
+        {
+            get => _guid;
+            set { }
         }
 
         public String Description

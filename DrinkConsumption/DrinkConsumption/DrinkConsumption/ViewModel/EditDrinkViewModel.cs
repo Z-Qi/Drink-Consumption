@@ -8,22 +8,24 @@ namespace DrinkConsumption.ViewModel
 {
     public class EditDrinkViewModel
     {
-        private Drink _selectedDrink;
         private string _name;
         private double _volume;
         private double _stdDrinks;
         private double _price;
+        private Drink _selectedDrink;
+        private DrinkHistory _history;
 
         public ICommand EditDrinkCommand { get; private set; }
         public ICommand RemoveDrinkCommand { get; private set; }
 
-        public EditDrinkViewModel(Drink drink)
+        public EditDrinkViewModel(Drink drink, DrinkHistory history)
         {
-            _selectedDrink = drink;
             _name = drink.Type;
             _volume = drink.Volume;
             _stdDrinks = drink.StandardDrinks;
             _price = drink.Price;
+            _selectedDrink = drink;
+            _history = history;
 
             EditDrinkCommand = new Command(async () => await EditDrink());
             RemoveDrinkCommand = new Command(async () => await RemoveDrink());
@@ -74,13 +76,18 @@ namespace DrinkConsumption.ViewModel
             }
         }
 
+        public DrinkHistory History
+        {
+            get => _history;
+        }
+
         private async Task EditDrink()
         {
             SelectedDrink.Type = Name;
             SelectedDrink.Volume = Volume;
             SelectedDrink.StandardDrinks = StandardDrinks;
             SelectedDrink.Price = Price;
-            await DatabaseManager.DatabaseManagerInstance.PostDrink(SelectedDrink);
+            await DatabaseManager.DatabaseManagerInstance.EditDrink(SelectedDrink);
             await Application.Current.MainPage.Navigation.PopModalAsync();
         }
 
@@ -91,8 +98,9 @@ namespace DrinkConsumption.ViewModel
             {
                 return;
             }
-            await DatabaseManager.DatabaseManagerInstance.RemoveDrink(SelectedDrink);
             await Application.Current.MainPage.Navigation.PopModalAsync();
+            History.Remove(SelectedDrink);
+            await DatabaseManager.DatabaseManagerInstance.RemoveDrink(SelectedDrink);
         }
     }
 }

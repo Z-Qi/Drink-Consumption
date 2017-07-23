@@ -14,31 +14,26 @@ namespace DrinkConsumption
 {
 	public partial class App : Application
 	{
-
-        DrinkHistoryViewModel _history;
-
         public App ()
 		{
 			InitializeComponent();
-
-            _history = DrinkHistoryViewModel.NewHistory();
 
             MainPage = new CarouselPage()
             {
                 Children =
                 {
                     new MainPage(),
-                    new HistoryPage(_history),
+                    new HistoryPage(),
                 }
             };
         }
 
 		protected override void OnStart ()
 		{
-            _history.Add(new DrinkHistory(DateTime.Today, new DrinkViewModel().Drinks));
+            // Handle when your app starts
         }
 
-		protected override void OnSleep ()
+        protected override void OnSleep ()
 		{
 			// Handle when your app sleeps
 		}

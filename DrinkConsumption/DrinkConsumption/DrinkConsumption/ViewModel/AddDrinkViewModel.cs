@@ -1,5 +1,6 @@
 ﻿using DrinkConsumption.Database;
 using DrinkConsumption.Model;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -8,17 +9,18 @@ namespace DrinkConsumption.ViewModel
 {
     public class AddDrinkViewModel
     {
-
         private string _name;
         private double _volume;
         private double _stdDrinks;
         private double _price;
+        private DrinkHistory _history;
 
         public ICommand AddDrinkCommand { get; private set; }
 
-        public AddDrinkViewModel(string name)
+        public AddDrinkViewModel(string name, DrinkHistory history)
         {
             _name = name;
+            _history = history;
             AddDrinkCommand = new Command(async () => await AddDrink());
         }
 
@@ -58,6 +60,11 @@ namespace DrinkConsumption.ViewModel
             }
         }
 
+        public DrinkHistory History
+        {
+            get => _history;
+        }
+
         private async Task AddDrink()
         {
             if (string.IsNullOrEmpty(Name))
@@ -65,8 +72,10 @@ namespace DrinkConsumption.ViewModel
                 await Application.Current.MainPage.DisplayAlert("Whoops!", "You have not entered a drink", "OK");
                 return;
             }
-            await DatabaseManager.DatabaseManagerInstance.PostDrink(new Drink(Name, Volume, StandardDrinks, Price));
             await Application.Current.MainPage.Navigation.PopModalAsync();
+            Drink newDrink = new Drink(Name, Volume, StandardDrinks, Price, History.Guid);
+            History.Add(newDrink);
+            await DatabaseManager.DatabaseManagerInstance.PostDrink(newDrink);
         }
     }
 }

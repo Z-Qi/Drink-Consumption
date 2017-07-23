@@ -1,5 +1,4 @@
-﻿using DrinkConsumption.Model;
-
+﻿using DrinkConsumption.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,10 +7,10 @@ namespace DrinkConsumption.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HistoryDetailsPage : ContentPage
     {
-        public HistoryDetailsPage(DrinkHistory history)
+        public HistoryDetailsPage(DrinkViewModel viewModel)
         {
             InitializeComponent();
-            BindingContext = history;
+            BindingContext = viewModel;
         }
     }
 }
