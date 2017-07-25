@@ -1,6 +1,8 @@
 ﻿using DrinkConsumption.Model;
 using Microsoft.WindowsAzure.MobileServices;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DrinkConsumption.Database
@@ -74,6 +76,18 @@ namespace DrinkConsumption.Database
         public async Task<List<DrinkHistory>> GetHistory()
         {
             return await _drinkHistoryTable.ToListAsync();
+        }
+
+        public async Task<DrinkHistory> GetTodaysHistory()
+        {
+            List<DrinkHistory> histories = await DatabaseManagerInstance.GetHistory();
+            DrinkHistory history = histories.FirstOrDefault((h => h.Date == DateTime.Today));
+            if (history == null)
+            {
+                history = new DrinkHistory(DateTime.Today);
+                await PostHistory(history);
+            }
+            return history;
         }
 
         public async Task PostHistory(DrinkHistory history)

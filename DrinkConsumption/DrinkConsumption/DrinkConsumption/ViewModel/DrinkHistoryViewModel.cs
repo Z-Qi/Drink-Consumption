@@ -15,11 +15,10 @@ namespace DrinkConsumption.ViewModel
     public class DrinkHistoryViewModel : INotifyPropertyChanged
     {
         private static DrinkHistoryViewModel _history = null;
-        private ObservableCollection<DrinkHistory> _drinkHistory;
-        private DrinkHistory _todaysHistory;
+        private ObservableCollection<DrinkHistory> _drinkHistories;
         private DrinkHistory _selectedHistory;
 
-        private bool _isRefreshing = false;
+        private bool _isRefreshing;
 
         public ICommand PullToRefreshCommand { get; private set; }
 
@@ -27,11 +26,12 @@ namespace DrinkConsumption.ViewModel
 
         private DrinkHistoryViewModel()
         {
-            _drinkHistory = new ObservableCollection<DrinkHistory>();
-            _todaysHistory = new DrinkHistory(DateTime.Today);
-            _drinkHistory.Add(_todaysHistory);
+            _drinkHistories = new ObservableCollection<DrinkHistory>();
             //TestSample();
             PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
+
+            PullToRefreshCommand.Execute(null);
+            _isRefreshing = false;
         }
         /*
         private void TestSample()
@@ -54,29 +54,13 @@ namespace DrinkConsumption.ViewModel
             return _history;
         }
 
-        public void Add(DrinkHistory drinkList)
+        public ObservableCollection<DrinkHistory> Histories
         {
-            if (!History.Any(h => h.Date == drinkList.Date))
-            {
-                History.Add(drinkList);
-            }
-        }
-
-        public ObservableCollection<DrinkHistory> History
-        {
-            get => _drinkHistory;
+            get => _drinkHistories;
             set
             {
-                _drinkHistory = value;
-            }
-        }
-
-        public DrinkHistory TodaysHistory
-        {
-            get => _todaysHistory;
-            set
-            {
-                _todaysHistory = value;
+                _drinkHistories = value;
+                OnPropertyChanged();
             }
         }
 
@@ -91,6 +75,7 @@ namespace DrinkConsumption.ViewModel
                     HistoryDetails();
                 }
                 _selectedHistory = null;
+                OnPropertyChanged();
             }
         }
 
@@ -117,13 +102,7 @@ namespace DrinkConsumption.ViewModel
         private async Task OnPullToRefresh()
         {
             Refreshing = true;
-            if (!History.Any(h => h.Date == DateTime.Today))
-            {
-                TodaysHistory = new DrinkHistory(DateTime.Today);
-                History.Add(TodaysHistory);
-                await DatabaseManager.DatabaseManagerInstance.PostHistory(TodaysHistory);
-            }
-            History = new ObservableCollection<DrinkHistory>(await DatabaseManager.DatabaseManagerInstance.GetHistory());
+            Histories = new ObservableCollection<DrinkHistory>(await DatabaseManager.DatabaseManagerInstance.GetHistory());
             Refreshing = false;
         }
     }

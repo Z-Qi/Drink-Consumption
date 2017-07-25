@@ -35,7 +35,10 @@ namespace DrinkConsumption.Model
         public Guid Guid
         {
             get => _guid;
-            set { }
+            set
+            {
+                _guid = value;
+            }
         }
 
         public String DateString

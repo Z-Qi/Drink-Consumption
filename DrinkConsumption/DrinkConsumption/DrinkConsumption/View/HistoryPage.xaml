@@ -14,7 +14,7 @@
             <ListView 
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
-                ItemsSource="{Binding History}"
+                ItemsSource="{Binding Histories}"
                 SelectedItem="{Binding SelectedHistory, Mode=TwoWay}"
                 IsPullToRefreshEnabled="True"
                 RefreshCommand="{Binding PullToRefreshCommand}"

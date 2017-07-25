@@ -18,7 +18,7 @@ namespace DrinkConsumption.ViewModel
         private Drink _selectedDrink;
         private DrinkHistory _history;
 
-        private bool _isRefreshing = false;
+        private bool _isRefreshing;
 
         public ICommand AddDrinkCommand { get; private set; }
         public ICommand PullToRefreshCommand { get; private set; }
@@ -29,11 +29,13 @@ namespace DrinkConsumption.ViewModel
         public DrinkViewModel()
         {
             _drinks = new ObservableCollection<Drink>();
-            _history = new DrinkHistory(DateTime.Today);
             //TestSample();
             AddDrinkCommand = new Command(async () => await AddDrink());
             PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
             ClearDrinksCommand = new Command(async () => await ClearDrinks());
+
+            PullToRefreshCommand.Execute(null);
+            _isRefreshing = false;
         }
 
         public DrinkViewModel(DrinkHistory history)
@@ -44,6 +46,9 @@ namespace DrinkConsumption.ViewModel
             AddDrinkCommand = new Command(async () => await AddDrink());
             PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
             ClearDrinksCommand = new Command(async () => await ClearDrinks());
+
+            PullToRefreshCommand.Execute(null);
+            _isRefreshing = false;
         }
         /*
         private void TestSample()
@@ -67,7 +72,7 @@ namespace DrinkConsumption.ViewModel
             set
             {
                 _drinks = value;
-                this.OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -77,7 +82,7 @@ namespace DrinkConsumption.ViewModel
             set
             {
                 _searchEntry = value;
-                this.OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -92,6 +97,7 @@ namespace DrinkConsumption.ViewModel
                     EditDrink();
                 }
                 _selectedDrink = null;
+                OnPropertyChanged();
             }
         }
 
@@ -135,13 +141,6 @@ namespace DrinkConsumption.ViewModel
             await Application.Current.MainPage.Navigation.PushModalAsync(new EditDrinkPage(new EditDrinkViewModel(SelectedDrink, History)));
         }
 
-        private async Task OnPullToRefresh()
-        {
-            Refreshing = true;
-            Drinks = new ObservableCollection<Drink>(await DatabaseManager.DatabaseManagerInstance.GetDrinks(History));
-            Refreshing = false;
-        }
-
         private async Task ClearDrinks()
         {
             bool result = true;
@@ -159,6 +158,15 @@ namespace DrinkConsumption.ViewModel
             {
                 await DatabaseManager.DatabaseManagerInstance.RemoveHistory(History);
             }
+        }
+
+        private async Task OnPullToRefresh()
+        {
+            Refreshing = true;
+            if (History == null)
+                History = await DatabaseManager.DatabaseManagerInstance.GetTodaysHistory();
+            Drinks = new ObservableCollection<Drink>(await DatabaseManager.DatabaseManagerInstance.GetDrinks(History));
+            Refreshing = false;
         }
     }
 }
