@@ -10,6 +10,7 @@ namespace DrinkConsumption.Model
         private double _stdDrinks;
         private double _price;
         private readonly Guid _guid;
+        private DateTime _time;
 
         public Drink (String type, double vol, double std, double price, Guid guid)
         {
@@ -18,6 +19,7 @@ namespace DrinkConsumption.Model
             _stdDrinks = std;
             _price = price;
             _guid = guid;
+            _time = DateTime.UtcNow;
         }
 
         [JsonProperty(PropertyName = "Id")]
@@ -68,6 +70,16 @@ namespace DrinkConsumption.Model
         {
             get => _guid;
             set { }
+        }
+
+        [JsonProperty(PropertyName = "Time")]
+        public DateTime Time
+        {
+            get => _time;
+            set
+            {
+                _time = value;
+            }
         }
 
         public String Description

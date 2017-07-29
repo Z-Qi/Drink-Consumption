@@ -4,55 +4,56 @@
              x:Class="DrinkConsumption.View.AddDrinkPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="#F5F5DC">
-            <Label Text="AddDrink" VerticalOptions="Start"/>
+            <Label 
+                Text="AddDrink" 
+                TextColor="#3A3A3A"
+                FontSize="Large"
+                VerticalOptions="Start"
+                HorizontalTextAlignment="Center"/>
 
             <Entry
                 Placeholder="Name"
                 Text="{Binding Name, Mode=TwoWay}"
+                TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Text"
-                BackgroundColor="Cornsilk"
-                
+               
                 />
 
             <Entry
                 Placeholder="Volume"
                 Text="{Binding Volume, Mode=OneWayToSource}"
+                TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
-                BackgroundColor="BlanchedAlmond"
-                
                 />
 
             <Entry
                 Placeholder="Standard Drinks"
                 Text="{Binding StandardDrinks, Mode=OneWayToSource}"
+                TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
-                BackgroundColor="PowderBlue"
-                
                 />
 
             <Entry
                 Placeholder="Price"
                 Text="{Binding Price, Mode=OneWayToSource}"
+                TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
-                BackgroundColor="BurlyWood"
-                
                 />
 
             <Button
                 Text="Done"
-                TextColor="DarkSlateGray"
+                TextColor="#3A3A3A"
                 VerticalOptions="StartAndExpand"
                 HorizontalOptions="End"
                 Command="{Binding AddDrinkCommand}"
-                
                 />
         </StackLayout>
     </ContentPage.Content>

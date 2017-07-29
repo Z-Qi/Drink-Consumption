@@ -4,42 +4,47 @@
              x:Class="DrinkConsumption.View.EditDrinkPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="#F5F5DC">
-            <Label Text="Edit Drink" VerticalOptions="Start"/>
+            <Label 
+                Text="Edit Drink" 
+                TextColor="#3A3A3A"
+                FontSize="Large"
+                VerticalOptions="Start"
+                HorizontalOptions="Center"/>
 
             <Entry
                 Placeholder="Name"
                 Text="{Binding Name, Mode=TwoWay}"
+                TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Text"
-                BackgroundColor="Cornsilk"
                 />
 
             <Entry
                 Placeholder="Volume"
                 Text="{Binding Volume, Mode=TwoWay}"
+                TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
-                BackgroundColor="BlanchedAlmond"
                 />
 
             <Entry
                 Placeholder="Standard Drinks"
                 Text="{Binding StandardDrinks, Mode=TwoWay}"
+                TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
-                BackgroundColor="PowderBlue"
                 />
 
             <Entry
                 Placeholder="Price"
                 Text="{Binding Price, Mode=TwoWay}"
+                TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
-                BackgroundColor="BurlyWood"
                 />
 
             <Grid RowSpacing="0"
@@ -52,28 +57,27 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Button
-                    Text="Done"
-                    TextColor="DarkSlateGray"
-                    VerticalOptions="Start"
-                    HorizontalOptions="Start"
-                    Command="{Binding EditDrinkCommand}"
+                    Text="Remove"
+                    TextColor="#3A3A3A"
+                    VerticalOptions="End"
+                    HorizontalOptions="End"
+                    Command="{Binding RemoveDrinkCommand}"
                     Grid.Column="0"
                     Grid.Row="0"
                 />
 
                 <Button
-                    Text="Remove"
-                    TextColor="DarkSlateGray"
-                    VerticalOptions="End"
-                    HorizontalOptions="End"
-                    Command="{Binding RemoveDrinkCommand}"
+                    Text="Done"
+                    TextColor="#3A3A3A"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Start"
+                    Command="{Binding EditDrinkCommand}"
                     Grid.Column="2"
                     Grid.Row="0"
                 />
             </Grid>
-            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

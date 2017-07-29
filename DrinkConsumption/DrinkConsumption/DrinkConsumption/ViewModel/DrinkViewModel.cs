@@ -39,7 +39,7 @@ namespace DrinkConsumption.ViewModel
         {
             _drinks = new ObservableCollection<Drink>();
             _date = DateTime.Today;
-            //TestSample();
+
             MakeRequestCommand = new Command(async () => await MakeRequest());
             AddDrinkCommand = new Command(async () => await AddDrink());
             ClearDrinksCommand = new Command(async () => await ClearDrinks());
@@ -54,7 +54,7 @@ namespace DrinkConsumption.ViewModel
             _drinks = new ObservableCollection<Drink>();
             _date = history.Date;
             _history = history;
-            //TestSample();
+
             MakeRequestCommand = new Command(async () => await MakeRequest());
             AddDrinkCommand = new Command(async () => await AddDrink());
             PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
@@ -62,21 +62,6 @@ namespace DrinkConsumption.ViewModel
 
             PullToRefreshCommand.Execute(null);
             _isRefreshing = false;
-        }
-        /*
-        private void TestSample()
-        {
-            DatabaseManager.DatabaseManagerInstance.PostDrink(new Drink("TEST 1", 100, 1.33333, 15.5, new Guid("00000000-0000-0000-0000-000000000001")));
-            DatabaseManager.DatabaseManagerInstance.PostDrink(new Drink("TEST 2", 600, 3, 45.99, new Guid("00000000-0000-0000-0000-000000000001")));
-            DatabaseManager.DatabaseManagerInstance.PostDrink(new Drink("TEST 3", 010, 0.2, 5, new Guid("00000000-0000-0000-0000-000000000002")));
-            DatabaseManager.DatabaseManagerInstance.PostDrink(new Drink(null, 100, 1.33333, 15.5, new Guid("00000000-0000-0000-0000-000000000003")));
-            DatabaseManager.DatabaseManagerInstance.PostDrink(new Drink("", 600, 3, 45.99, new Guid("00000000-0000-0000-0000-000000000003")));
-            DatabaseManager.DatabaseManagerInstance.PostDrink(new Drink ("TEST 3", 010, 0.2, 5, new Guid("00000000-0000-0000-0000-000000000099")));
-        }
-        */
-        public void Add(Drink drink)
-        {
-            Drinks.Add(drink);
         }
 
         public ObservableCollection<Drink> Drinks
@@ -191,38 +176,42 @@ namespace DrinkConsumption.ViewModel
 
         private async Task AddDrink()
         {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDrinkPage(new AddDrinkViewModel(SearchEntry, History)));
+            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDrinkPage(new AddDrinkViewModel(SearchEntry, History, Drinks)));
             SearchEntry = null;
         }
 
         private async void RequestedDrink()
         {
             await Application.Current.MainPage.Navigation.PopModalAsync();
-            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDrinkPage(new AddDrinkViewModel(SelectedSearch.DisplayText, History)));
+            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDrinkPage(new AddDrinkViewModel(SelectedSearch.DisplayText, History, Drinks)));
             SelectedSearch = null;
         }
 
         private async void EditDrink()
         {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new EditDrinkPage(new EditDrinkViewModel(SelectedDrink, History)));
+            await Application.Current.MainPage.Navigation.PushModalAsync(new EditDrinkPage(new EditDrinkViewModel(SelectedDrink, Drinks)));
         }
 
         private async Task ClearDrinks()
         {
-            bool result = true;
+            bool remove = false;
 
             if (History.Date == DateTime.Today)
-                result = await Application.Current.MainPage.DisplayAlert("Remove all drinks from today", "Are you sure?", "Remove", "Cancel");
+                remove = await Application.Current.MainPage.DisplayAlert("Remove all drinks from today", "Are you sure?", "Remove", "Cancel");
             else
-                result = await Application.Current.MainPage.DisplayAlert("Remove all drinks from this day", "Are you sure?", "Remove", "Cancel");
+                remove = await Application.Current.MainPage.DisplayAlert("Remove all drinks from this day", "Are you sure?", "Remove", "Cancel");
 
-            if (!result) { return; }
+            if (!remove)
+            {
+                return;
+            }
 
             await DatabaseManager.DatabaseManagerInstance.ClearDrinks(History);
 
             if (History.Date != DateTime.Today)
             {
                 await DatabaseManager.DatabaseManagerInstance.RemoveHistory(History);
+                await Application.Current.MainPage.Navigation.PopModalAsync();
             }
         }
 
@@ -230,7 +219,7 @@ namespace DrinkConsumption.ViewModel
         {
             Refreshing = true;
             History = await DatabaseManager.DatabaseManagerInstance.GetHistory(Date);
-            Drinks = new ObservableCollection<Drink>(await DatabaseManager.DatabaseManagerInstance.GetDrinks(History));
+            Drinks = new ObservableCollection<Drink>((await DatabaseManager.DatabaseManagerInstance.GetDrinks(History)).OrderByDescending(d => d.Time).ToList());
             Refreshing = false;
         }
     }

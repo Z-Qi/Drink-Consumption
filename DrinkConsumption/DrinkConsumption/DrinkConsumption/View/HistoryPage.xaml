@@ -9,6 +9,7 @@
                 Text="History"
                 TextColor="#3A3A3A"
                 FontSize="Large"
+                VerticalOptions="Start"
                 HorizontalTextAlignment="Center"
                 />
             
@@ -31,9 +32,11 @@
             
             <Button
                 Text="CLEAR ALL HISTORY"
+                TextColor="#3A3A3A"
                 Command="{Binding ClearHistoryCommand}"
                 VerticalOptions="End"
                 HorizontalOptions="FillAndExpand"
+                Margin="5"
                 />
         </StackLayout>
     </ContentPage.Content>

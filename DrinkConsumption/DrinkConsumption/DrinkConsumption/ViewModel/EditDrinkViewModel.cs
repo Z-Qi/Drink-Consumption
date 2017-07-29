@@ -1,5 +1,6 @@
 ﻿using DrinkConsumption.Database;
 using DrinkConsumption.Model;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -13,19 +14,19 @@ namespace DrinkConsumption.ViewModel
         private double _stdDrinks;
         private double _price;
         private Drink _selectedDrink;
-        private DrinkHistory _history;
+        private ObservableCollection<Drink> _drinks;
 
         public ICommand EditDrinkCommand { get; private set; }
         public ICommand RemoveDrinkCommand { get; private set; }
 
-        public EditDrinkViewModel(Drink drink, DrinkHistory history)
+        public EditDrinkViewModel(Drink drink, ObservableCollection<Drink> drinks)
         {
             _name = drink.Type;
             _volume = drink.Volume;
             _stdDrinks = drink.StandardDrinks;
             _price = drink.Price;
             _selectedDrink = drink;
-            _history = history;
+            _drinks = drinks;
 
             EditDrinkCommand = new Command(async () => await EditDrink());
             RemoveDrinkCommand = new Command(async () => await RemoveDrink());
@@ -76,31 +77,34 @@ namespace DrinkConsumption.ViewModel
             }
         }
 
-        public DrinkHistory History
+        public ObservableCollection<Drink> Drinks
         {
-            get => _history;
+            get => _drinks;
         }
 
         private async Task EditDrink()
         {
+            Drinks.Remove(SelectedDrink);
             SelectedDrink.Type = Name;
             SelectedDrink.Volume = Volume;
             SelectedDrink.StandardDrinks = StandardDrinks;
             SelectedDrink.Price = Price;
+            Drinks.Insert(0,SelectedDrink);
             await DatabaseManager.DatabaseManagerInstance.EditDrink(SelectedDrink);
             await Application.Current.MainPage.Navigation.PopModalAsync();
         }
 
         private async Task RemoveDrink()
         {
-            bool result = await Application.Current.MainPage.DisplayAlert("Remove Drink", "Are you sure?", "Remove", "Cancel");
-            if (!result)
+            bool remove = await Application.Current.MainPage.DisplayAlert("Remove Drink", "Are you sure?", "Remove", "Cancel");
+            if (!remove)
             {
                 return;
             }
-            await Application.Current.MainPage.Navigation.PopModalAsync();
-            History.Remove(SelectedDrink);
+
+            Drinks.Remove(SelectedDrink);
             await DatabaseManager.DatabaseManagerInstance.RemoveDrink(SelectedDrink);
+            await Application.Current.MainPage.Navigation.PopModalAsync();
         }
     }
 }
