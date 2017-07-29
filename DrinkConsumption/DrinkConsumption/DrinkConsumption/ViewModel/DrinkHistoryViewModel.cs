@@ -20,6 +20,7 @@ namespace DrinkConsumption.ViewModel
 
         private bool _isRefreshing;
 
+        public ICommand ClearHistoryCommand { get; private set; }
         public ICommand PullToRefreshCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -28,6 +29,7 @@ namespace DrinkConsumption.ViewModel
         {
             _drinkHistories = new ObservableCollection<DrinkHistory>();
             //TestSample();
+            ClearHistoryCommand = new Command(async () => await ClearHistory());
             PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
 
             PullToRefreshCommand.Execute(null);
@@ -91,12 +93,20 @@ namespace DrinkConsumption.ViewModel
 
         private void HistoryDetails()
         {
-            Application.Current.MainPage.Navigation.PushModalAsync(new HistoryDetailsPage(new DrinkViewModel(SelectedHistory)));
+            Application.Current.MainPage.Navigation.PushModalAsync(new MainPage(new DrinkViewModel(SelectedHistory)));
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private async Task ClearHistory()
+        {
+            bool result = await Application.Current.MainPage.DisplayAlert("REMOVE ALL HISTORY", "This cannot be undone\nAre you sure?", "Remove", "Cancel");
+
+            if (!result) { return; }
+            await DatabaseManager.DatabaseManagerInstance.ClearHistory();
         }
 
         private async Task OnPullToRefresh()

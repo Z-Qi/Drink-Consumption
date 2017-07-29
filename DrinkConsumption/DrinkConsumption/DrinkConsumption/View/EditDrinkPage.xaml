@@ -13,7 +13,6 @@
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Text"
                 BackgroundColor="Cornsilk"
-                
                 />
 
             <Entry
@@ -23,7 +22,6 @@
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
                 BackgroundColor="BlanchedAlmond"
-                
                 />
 
             <Entry
@@ -33,7 +31,6 @@
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
                 BackgroundColor="PowderBlue"
-                
                 />
 
             <Entry
@@ -43,26 +40,40 @@
                 HorizontalOptions="FillAndExpand"
                 Keyboard="Numeric"
                 BackgroundColor="BurlyWood"
-                
                 />
 
-            <Button
-                Text="Done"
-                TextColor="DarkSlateGray"
-                VerticalOptions="Start"
-                HorizontalOptions="Start"
-                Command="{Binding EditDrinkCommand}"
+            <Grid RowSpacing="0"
+                  ColumnSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
                 
+                <Button
+                    Text="Done"
+                    TextColor="DarkSlateGray"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Start"
+                    Command="{Binding EditDrinkCommand}"
+                    Grid.Column="0"
+                    Grid.Row="0"
                 />
 
-            <Button
-                Text="Remove"
-                TextColor="DarkSlateGray"
-                VerticalOptions="End"
-                HorizontalOptions="End"
-                Command="{Binding RemoveDrinkCommand}"
-                
+                <Button
+                    Text="Remove"
+                    TextColor="DarkSlateGray"
+                    VerticalOptions="End"
+                    HorizontalOptions="End"
+                    Command="{Binding RemoveDrinkCommand}"
+                    Grid.Column="2"
+                    Grid.Row="0"
                 />
+            </Grid>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

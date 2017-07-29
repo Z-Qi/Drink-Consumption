@@ -22,7 +22,7 @@ namespace DrinkConsumption
             {
                 Children =
                 {
-                    new MainPage(),
+                    new MainPage(new DrinkViewModel()),
                     new HistoryPage(),
                 }
             };

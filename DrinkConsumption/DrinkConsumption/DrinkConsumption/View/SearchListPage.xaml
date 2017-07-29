@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DrinkConsumption.View.SearchListPage">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#F5F5DC">
+            <Label 
+                Text="Results"
+                TextColor="#3A3A3A"
+                FontSize="Large"
+                HorizontalTextAlignment="Center"
+                />
+
+            <ListView 
+                VerticalOptions="StartAndExpand"
+                HorizontalOptions="FillAndExpand"
+                ItemsSource="{Binding Suggestions}"
+                SelectedItem="{Binding SelectedSearch, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell
+                        Text="{Binding DisplayText}"
+                        TextColor="#3A3A3A"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

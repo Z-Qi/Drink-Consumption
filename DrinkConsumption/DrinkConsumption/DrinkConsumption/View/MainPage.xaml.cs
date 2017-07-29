@@ -1,13 +1,14 @@
-﻿using Xamarin.Forms;
+﻿using DrinkConsumption.ViewModel;
+using Xamarin.Forms;
 
 namespace DrinkConsumption.View
 {
     public partial class MainPage : ContentPage
 	{
-		public MainPage()
+		public MainPage(DrinkViewModel viewModel)
 		{
 			InitializeComponent();
-            BindingContext = new ViewModel.DrinkViewModel();
+            BindingContext = viewModel;
 		}
 	}
 }

@@ -4,10 +4,15 @@ using DrinkConsumption.View;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Web;
+using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DrinkConsumption.ViewModel
 {
@@ -15,24 +20,30 @@ namespace DrinkConsumption.ViewModel
     {
         private ObservableCollection<Drink> _drinks;
         private string _searchEntry;
+        private SearchSuggestion _selectedSearch;
         private Drink _selectedDrink;
+        private DateTime _date;
         private DrinkHistory _history;
+        private List<SearchSuggestion> _suggestions;
 
         private bool _isRefreshing;
 
+        public ICommand MakeRequestCommand { get; private set; }
         public ICommand AddDrinkCommand { get; private set; }
-        public ICommand PullToRefreshCommand { get; private set; }
         public ICommand ClearDrinksCommand { get; private set; }
+        public ICommand PullToRefreshCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DrinkViewModel()
         {
             _drinks = new ObservableCollection<Drink>();
+            _date = DateTime.Today;
             //TestSample();
+            MakeRequestCommand = new Command(async () => await MakeRequest());
             AddDrinkCommand = new Command(async () => await AddDrink());
-            PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
             ClearDrinksCommand = new Command(async () => await ClearDrinks());
+            PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
 
             PullToRefreshCommand.Execute(null);
             _isRefreshing = false;
@@ -41,8 +52,10 @@ namespace DrinkConsumption.ViewModel
         public DrinkViewModel(DrinkHistory history)
         {
             _drinks = new ObservableCollection<Drink>();
+            _date = history.Date;
             _history = history;
             //TestSample();
+            MakeRequestCommand = new Command(async () => await MakeRequest());
             AddDrinkCommand = new Command(async () => await AddDrink());
             PullToRefreshCommand = new Command(async () => await OnPullToRefresh());
             ClearDrinksCommand = new Command(async () => await ClearDrinks());
@@ -86,13 +99,27 @@ namespace DrinkConsumption.ViewModel
             }
         }
 
+        public SearchSuggestion SelectedSearch
+        {
+            get => _selectedSearch;
+            set
+            {
+                _selectedSearch = value;
+                if (value != null)
+                {
+                    RequestedDrink();
+                }
+                OnPropertyChanged();
+            }
+        }
+
         public Drink SelectedDrink
         {
             get => _selectedDrink;
             set
             {
                 _selectedDrink = value;
-                if (_selectedDrink != null)
+                if (value != null)
                 {
                     EditDrink();
                 }
@@ -101,12 +128,26 @@ namespace DrinkConsumption.ViewModel
             }
         }
 
+        public DateTime Date
+        {
+            get => _date;
+        }
+
         public DrinkHistory History
         {
             get => _history;
             set
             {
                 _history = value;
+            }
+        }
+
+        public List<SearchSuggestion> Suggestions
+        {
+            get => _suggestions;
+            set
+            {
+                _suggestions = value;
             }
         }
 
@@ -130,10 +171,35 @@ namespace DrinkConsumption.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private async Task MakeRequest()
+        {
+            var client = new HttpClient();
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "333c22b2e5e24c0f8dde963849946f3a");
+            queryString["q"] = SearchEntry;
+            var uri = "https://api.cognitive.microsoft.com/bing/v5.0/suggestions/?" + queryString;
+
+            var response = await client.GetAsync(uri);
+            var responseString = await response.Content.ReadAsStringAsync();
+            Autosuggest results = JsonConvert.DeserializeObject<Autosuggest>(responseString);
+            List<Suggestion> groups = results.SuggestionGroups;
+            Suggestions = groups.FirstOrDefault(s => string.Equals(s.Name, "Web", StringComparison.OrdinalIgnoreCase)).SearchSuggestions;
+
+            await Application.Current.MainPage.Navigation.PushModalAsync(new SearchListPage(this));
+        }
+
         private async Task AddDrink()
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new AddDrinkPage(new AddDrinkViewModel(SearchEntry, History)));
             SearchEntry = null;
+        }
+
+        private async void RequestedDrink()
+        {
+            await Application.Current.MainPage.Navigation.PopModalAsync();
+            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDrinkPage(new AddDrinkViewModel(SelectedSearch.DisplayText, History)));
+            SelectedSearch = null;
         }
 
         private async void EditDrink()
@@ -163,8 +229,7 @@ namespace DrinkConsumption.ViewModel
         private async Task OnPullToRefresh()
         {
             Refreshing = true;
-            if (History == null)
-                History = await DatabaseManager.DatabaseManagerInstance.GetTodaysHistory();
+            History = await DatabaseManager.DatabaseManagerInstance.GetHistory(Date);
             Drinks = new ObservableCollection<Drink>(await DatabaseManager.DatabaseManagerInstance.GetDrinks(History));
             Refreshing = false;
         }

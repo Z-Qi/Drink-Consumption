@@ -78,10 +78,10 @@ namespace DrinkConsumption.Database
             return await _drinkHistoryTable.ToListAsync();
         }
 
-        public async Task<DrinkHistory> GetTodaysHistory()
+        public async Task<DrinkHistory> GetHistory(DateTime date)
         {
             List<DrinkHistory> histories = await DatabaseManagerInstance.GetHistory();
-            DrinkHistory history = histories.FirstOrDefault((h => h.Date == DateTime.Today));
+            DrinkHistory history = histories.FirstOrDefault((h => h.Date == date));
             if (history == null)
             {
                 history = new DrinkHistory(DateTime.Today);

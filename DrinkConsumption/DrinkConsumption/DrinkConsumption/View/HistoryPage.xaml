@@ -11,6 +11,7 @@
                 FontSize="Large"
                 HorizontalTextAlignment="Center"
                 />
+            
             <ListView 
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
@@ -27,6 +28,13 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            
+            <Button
+                Text="CLEAR ALL HISTORY"
+                Command="{Binding ClearHistoryCommand}"
+                VerticalOptions="End"
+                HorizontalOptions="FillAndExpand"
+                />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

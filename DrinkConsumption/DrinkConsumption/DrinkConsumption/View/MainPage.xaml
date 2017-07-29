@@ -17,21 +17,21 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Entry 
-                Margin="10"
+            <SearchBar
                 Placeholder="Search"
                 Text="{Binding SearchEntry, Mode=TwoWay}"
+                SearchCommand="{Binding MakeRequestCommand}"
                 TextColor="#3A3A3A"
                 VerticalOptions="Start"
                 HorizontalOptions="FillAndExpand"
                 Grid.Row="0"
                 Grid.Column="0"
-            />
+                />
 
             <Image 
                 Source="Add.png"
                 Aspect="AspectFit"
-                Scale="0.8"
+                Scale="0.75"
                 Grid.Row="0"
                 Grid.Column="1">
                 <Image.GestureRecognizers>
@@ -41,7 +41,7 @@
             </Image>
 
             <ListView 
-                VerticalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand"
                 HorizontalOptions="FillAndExpand"
                 ItemsSource="{Binding Drinks}"
                 IsPullToRefreshEnabled="True"
@@ -54,16 +54,16 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell
-                            Text="{Binding Type}"
-                            TextColor="#3A3A3A"
-                            Detail="{Binding Description}"
-                            DetailColor="#DEB888"/>
+                        Text="{Binding Type}"
+                        TextColor="#3A3A3A"
+                        Detail="{Binding Description}"
+                        DetailColor="#DEB888"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
             <Button
-                Text="Clear all drinks"
+                Text="CLEAR ALL DRINKS"
                 Command="{Binding ClearDrinksCommand}"
                 Grid.Row="2"
                 Grid.Column="0"
