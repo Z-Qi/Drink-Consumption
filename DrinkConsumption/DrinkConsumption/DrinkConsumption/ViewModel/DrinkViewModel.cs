@@ -172,6 +172,7 @@ namespace DrinkConsumption.ViewModel
             Suggestions = groups.FirstOrDefault(s => string.Equals(s.Name, "Web", StringComparison.OrdinalIgnoreCase)).SearchSuggestions;
 
             await Application.Current.MainPage.Navigation.PushModalAsync(new SearchListPage(this));
+            SearchEntry = null;
         }
 
         private async Task AddDrink()
