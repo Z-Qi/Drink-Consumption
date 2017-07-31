@@ -5,7 +5,7 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="#F5F5DC">
             <Label 
-                Text="AddDrink" 
+                Text="Add Drink" 
                 TextColor="#3A3A3A"
                 FontSize="Large"
                 VerticalOptions="Start"
